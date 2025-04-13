@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>cousin bear os1.1</title>
+  <title>cousin bear os</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/c%20ui.png">
   <link rel="style" href="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/code/animation.css">
   <style>
-    * {
-      user-select: none;
-    }
-
+    * { user-select: none; }
     html, body {
       margin: 0;
       padding: 0;
@@ -18,13 +16,11 @@
       font-family: "Segoe UI", sans-serif;
       color: white;
     }
-
     body {
       background-image: url('https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/bg.png');
       background-size: cover;
       background-position: center;
     }
-
     .desktop {
       display: flex;
       flex-wrap: wrap;
@@ -38,25 +34,21 @@
       bottom: 40px;
       overflow-y: auto;
     }
-
     .icon {
       width: 80px;
       text-align: center;
       margin: 10px;
       cursor: pointer;
     }
-
     .icon img {
       width: 64px;
       height: 64px;
     }
-
     .label {
       margin-top: 5px;
       font-size: 14px;
       text-shadow: 1px 1px 3px black;
     }
-
     .taskbar {
       position: fixed;
       bottom: 0;
@@ -71,7 +63,6 @@
       justify-content: space-between;
       z-index: 1000;
     }
-
     .start-button {
       background-color: green;
       color: white;
@@ -80,12 +71,10 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     .clock {
       color: white;
       font-size: 14px;
     }
-
     .window {
       position: absolute;
       width: 400px;
@@ -97,7 +86,6 @@
       flex-direction: column;
       z-index: 10;
     }
-
     .window-header {
       background-color: green;
       color: white;
@@ -107,13 +95,11 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .window-content {
       flex: 1;
       padding: 10px;
       color: black;
     }
-
     .close-btn {
       background: red;
       border: none;
@@ -123,7 +109,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-
     .context-menu {
       position: absolute;
       background-color: #fff;
@@ -133,16 +118,13 @@
       display: none;
       z-index: 999;
     }
-
     .context-menu div {
       padding: 8px 12px;
       cursor: pointer;
     }
-
     .context-menu div:hover {
       background-color: #ccc;
     }
-
     .program-list {
       background-color: white;
       color: black;
@@ -155,22 +137,16 @@
       flex-direction: column;
       z-index: 1000;
     }
-
     .program-list div {
       padding: 5px;
       cursor: pointer;
     }
-
     .program-list div:hover {
       background-color: #eee;
     }
   </style>
 </head>
 <body onkeydown="handleKey(event)">
-  <!-- HTML 結構保留原樣 -->
-</head>
-<body onkeydown="handleKey(event)">
-
   <div class="desktop" id="desktop">
     <div class="icon" onclick="openWindow('此電腦')">
       <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/pc.png">
@@ -188,43 +164,42 @@
       <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/main/images/cmd.png">
       <div class="label">終端</div>
     </div>
-    <div class="icon" onclick="openWindow('瀏覽器')">
-      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/browse.png">
-      <div class="label">瀏覽器</div>
+    <div class="icon" onclick="virusAttack()">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/virus.png">
+      <div class="label">病毒</div>
     </div>
   </div>
-
   <div class="taskbar">
     <button class="start-button" onclick="toggleProgramList()">👁️查看</button>
     <span>cousin bear os模擬桌面1.1</span>
     <span class="clock" id="clock"></span>
   </div>
-
   <div class="context-menu" id="contextMenu"></div>
-
   <div class="program-list" id="programList">
     <div onclick="openWindow('此電腦')">🖥️ 此電腦</div>
     <div onclick="openWindow('垃圾筒')">🗑️ 垃圾筒</div>
     <div onclick="openWindow('設定')">⚙️ 設定</div>
     <div onclick="openWindow('終端')">⬛ 終端</div>
     <div onclick="openWindow('瀏覽器')">🌍 瀏覽器</div>
+    <div onclick="openWindow('粉紅熊掃描')">🧸 粉紅熊掃描</div>
     <div onclick="shutdown()">📴 關機</div>
   </div>
-
   <script>
     const contextMenu = document.getElementById("contextMenu");
     const desktop = document.getElementById("desktop");
     const programList = document.getElementById("programList");
     const clock = document.getElementById("clock");
-
     const windowMessages = {
-      "此電腦": "system.exe",
+      "此電腦": "system.exe、virus.exe、monkey.jpg",
       "垃圾筒": "omg.mp4",
       "設定": "此版本的設定沒有東西，抱歉",
       "終端": "輸入「help」獲得所有指令_",
-      "瀏覽器": "www.google.com"
+      "瀏覽器": "www.google.com",
+      "粉紅熊掃描": "你的電腦有1個病毒：virus.exe"
     };
 
+    let virusInterval = null;
+    let virusWindowCount = 0;
     function updateClock() {
       const now = new Date();
       const timeStr = now.toLocaleTimeString();
@@ -242,7 +217,8 @@
           <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
         </div>
         <div class="window-content">
-          <p>${windowMessages[title] || "敬請期待此功能"}</p>
+          <p>${windowMessages[title] || "哎呀！電腦發生了錯誤，請立即修復"}</p>
+          ${(title === "錯誤") ? '<button onclick="this.parentElement.parentElement.remove()">取消</button> <button onclick="this.parentElement.parentElement.remove()">關閉</button>' : ''}
         </div>
       `;
       newWin.style.top = Math.random() * 200 + 100 + "px";
@@ -254,36 +230,18 @@
       programList.style.display = programList.style.display === "none" || programList.style.display === '' ? "flex" : "none";
     }
 
-    function showContextMenu(e, title) {
-      e.preventDefault();
-      contextMenu.innerHTML = `
-        <div onclick="openWindow('${title}')">📂 打開</div>
-        <div onclick="openWindow('${title}')">🔒 以管理員身份開啟</div>
-      `;
-      contextMenu.style.top = `${e.pageY}px`;
-      contextMenu.style.left = `${e.pageX}px`;
-      contextMenu.style.display = "block";
-    }
-
-    document.addEventListener("click", () => {
-      contextMenu.style.display = "none";
-    });
-
     function startDrag(e, win) {
       e.preventDefault();
       let offsetX = e.clientX - win.offsetLeft;
       let offsetY = e.clientY - win.offsetTop;
-
       function move(ev) {
         win.style.left = `${ev.clientX - offsetX}px`;
         win.style.top = `${ev.clientY - offsetY}px`;
       }
-
       function stop() {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", stop);
       }
-
       document.addEventListener("mousemove", move);
       document.addEventListener("mouseup", stop);
     }
@@ -302,11 +260,24 @@
       }
     }
 
+    function virusAttack() {
+      if (virusInterval) return;
+      virusInterval = setInterval(() => {
+        openWindow('錯誤');
+        virusWindowCount++;
+        if (virusWindowCount >= 90) {
+          window.open('https://www.google.com', '_blank');
+          clearInterval(virusInterval);
+          virusInterval = null;
+        }
+      }, 90);
+    }
+
     const initWin = document.createElement("div");
     initWin.className = "window";
     initWin.innerHTML = `
       <div class="window-header" onmousedown="startDrag(event, this.parentElement)">
-        <span>使用須知</span>
+        <span>歡迎使用</span>
         <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
       </div>
       <div class="window-content">
@@ -317,8 +288,5 @@
     initWin.style.left = "100px";
     document.body.appendChild(initWin);
   </script>
-</body>
-</html>
-
 </body>
 </html>

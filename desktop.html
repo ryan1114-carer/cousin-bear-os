@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>cousin bear os1.0</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/bg.png');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      color: white;
+    }
+
+    .desktop {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      position: relative;
+      height: calc(100% - 40px);
+    }
+
+    .icon {
+      width: 80px;
+      text-align: center;
+      margin: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .icon img {
+      width: 64px;
+      height: 64px;
+    }
+
+    .label {
+      margin-top: 5px;
+      font-size: 14px;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    .taskbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 40px;
+      width: 100%;
+      background-color: rgba(30, 30, 30, 0.8);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      box-shadow: 0 -2px 5px black;
+    }
+
+    .start-button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .window {
+      position: absolute;
+      top: 100px;
+      left: 150px;
+      width: 400px;
+      height: 300px;
+      background-color: white;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px black;
+      display: none;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .window-header {
+      background-color: green;
+      color: white;
+      padding: 5px;
+      cursor: move;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .window-content {
+      flex: 1;
+      padding: 10px;
+      color: black;
+    }
+
+    .close-btn {
+      background: red;
+      border: none;
+      color: white;
+      width: 25px;
+      height: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .context-menu {
+      position: absolute;
+      background-color: #fff;
+      color: black;
+      border: 1px solid #ccc;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 999;
+    }
+
+    .context-menu div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .context-menu div:hover {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="desktop" id="desktop">
+    <div class="icon" onclick="openWindow('此電腦')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/Image_20250413_1421-removebg-preview.png">
+      <div class="label">此電腦</div>
+    </div>
+    <div class="icon" onclick="openWindow('垃圾筒')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/Image_20250413_1424-removebg-preview.png">
+      <div class="label">垃圾筒</div>
+    </div>
+  </div>
+
+  <!-- 模擬視窗 -->
+  <div class="window" id="appWindow">
+    <div class="window-header">
+      <span id="windowTitle">視窗</span>
+      <button class="close-btn" onclick="closeWindow()">×</button>
+    </div>
+    <div class="window-content">
+      <p>敬請期待此功能，版本為1.0，只是一個沒用的桌面，以後會像windows12網頁版一樣漂亮</p>
+    </div>
+  </div>
+
+  <!-- 右鍵選單 -->
+  <div class="context-menu" id="contextMenu">
+    <div onclick="alert('敬請期待此功能，版本為1.0，只是一個沒用的桌面，以後會像windows12網頁版一樣漂亮')">🔁整理</div>
+    <div onclick="alert('敬請期待此功能，版本為1.0，只是一個沒用的桌面，以後會像windows12網頁版一樣漂亮')">➕新增</div>
+    <div onclick="alert('敬請期待此功能，版本為1.0，只是一個沒用的桌面，以後會像windows12網頁版一樣漂亮')">🎨個人化</div>
+  </div>
+
+  <!-- 狀態列 -->
+  <div class="taskbar">
+    <button class="start-button" onclick="alert('敬請期待此功能，版本為1.0，只是一個沒用的桌面，以後會像windows12網頁版一樣漂亮')">👁️查看</button>
+    <span>cousin bear os模擬桌面1.0</span>
+  </div>
+
+  <script>
+    const contextMenu = document.getElementById("contextMenu");
+    const desktop = document.getElementById("desktop");
+    const appWindow = document.getElementById("appWindow");
+    const windowTitle = document.getElementById("windowTitle");
+
+    // 開啟視窗
+    function openWindow(title) {
+      windowTitle.innerText = title;
+      appWindow.style.display = "flex";
+    }
+
+    // 關閉視窗
+    function closeWindow() {
+      appWindow.style.display = "none";
+    }
+
+    // 顯示右鍵選單
+    desktop.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      contextMenu.style.top = `${e.pageY}px`;
+      contextMenu.style.left = `${e.pageX}px`;
+      contextMenu.style.display = "block";
+    });
+
+    // 點擊其他地方關閉選單
+    document.addEventListener("click", () => {
+      contextMenu.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>

@@ -2,28 +2,41 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>cousin bear os1.1</title>
   <link rel="style" href="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/code/animation.css">
   <style>
-    body {
+    * {
+      user-select: none;
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
-      background-image: url('https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/bg.png');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
       font-family: "Segoe UI", sans-serif;
       color: white;
     }
 
+    body {
+      background-image: url('https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/bg.png');
+      background-size: cover;
+      background-position: center;
+    }
+
     .desktop {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      align-content: flex-start;
       align-items: flex-start;
       padding: 20px;
-      position: relative;
-      height: calc(100% - 40px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 40px;
+      overflow-y: auto;
     }
 
     .icon {
@@ -31,7 +44,6 @@
       text-align: center;
       margin: 10px;
       cursor: pointer;
-      user-select: none;
     }
 
     .icon img {
@@ -46,7 +58,7 @@
     }
 
     .taskbar {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       left: 0;
       height: 40px;
@@ -57,6 +69,7 @@
       padding: 0 10px;
       box-shadow: 0 -2px 5px black;
       justify-content: space-between;
+      z-index: 1000;
     }
 
     .start-button {
@@ -75,8 +88,6 @@
 
     .window {
       position: absolute;
-      top: 100px;
-      left: 150px;
       width: 400px;
       height: 300px;
       background-color: white;
@@ -154,6 +165,9 @@
       background-color: #eee;
     }
   </style>
+</head>
+<body onkeydown="handleKey(event)">
+  <!-- HTML 結構保留原樣 -->
 </head>
 <body onkeydown="handleKey(event)">
 
@@ -292,16 +306,19 @@
     initWin.className = "window";
     initWin.innerHTML = `
       <div class="window-header" onmousedown="startDrag(event, this.parentElement)">
-        <span>歡迎使用</span>
+        <span>使用須知</span>
         <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
       </div>
       <div class="window-content">
-        <p>cousin bear os 是由錶哥熊原創，使用 HTML、CSS、JavaScript 等網路技術打造。歡迎到我的 GitHub 查看原始碼！</p>
+        <p>cousin bear os 是由錶哥熊原創，使用 HTML、CSS、JavaScript 等網路技術打造。歡迎到我的 GitHub 查看原始碼！按下F11全螢幕</p>
       </div>
     `;
     initWin.style.top = "100px";
     initWin.style.left = "100px";
     document.body.appendChild(initWin);
   </script>
+</body>
+</html>
+
 </body>
 </html>

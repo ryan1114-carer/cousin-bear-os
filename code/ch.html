@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-chese">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>cousin bear os</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/c%20ui.png">
+  <link rel="style" href="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/code/animation.css">
+  <style>
+    * { user-select: none; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      color: white;
+    }
+    body {
+      background-image: url('https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/bg.png');
+      background-size: cover;
+      background-position: center;
+    }
+    .desktop {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: flex-start;
+      padding: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 40px;
+      overflow-y: auto;
+    }
+    .icon {
+      width: 80px;
+      text-align: center;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .icon img {
+      width: 64px;
+      height: 64px;
+    }
+    .label {
+      margin-top: 5px;
+      font-size: 14px;
+      text-shadow: 1px 1px 3px black;
+    }
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 40px;
+      width: 100%;
+      background-color: rgba(30, 30, 30, 0.8);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      box-shadow: 0 -2px 5px black;
+      justify-content: space-between;
+      z-index: 1000;
+    }
+    .start-button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .clock {
+      color: white;
+      font-size: 14px;
+    }
+    .window {
+      position: absolute;
+      width: 400px;
+      height: 300px;
+      background-color: white;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px black;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+    .window-header {
+      background-color: green;
+      color: white;
+      padding: 5px;
+      cursor: move;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .window-content {
+      flex: 1;
+      padding: 10px;
+      color: black;
+    }
+    .close-btn {
+      background: red;
+      border: none;
+      color: white;
+      width: 25px;
+      height: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .context-menu {
+      position: absolute;
+      background-color: #fff;
+      color: black;
+      border: 1px solid #ccc;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 999;
+    }
+    .context-menu div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .context-menu div:hover {
+      background-color: #ccc;
+    }
+    .program-list {
+      background-color: white;
+      color: black;
+      padding: 10px;
+      position: absolute;
+      bottom: 50px;
+      left: 10px;
+      border: 1px solid gray;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+    }
+    .program-list div {
+      padding: 5px;
+      cursor: pointer;
+    }
+    .program-list div:hover {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body onkeydown="handleKey(event)">
+  <div class="desktop" id="desktop">
+    <div class="icon" onclick="openWindow('此计算机')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/pc.png">
+      <div class="label">此计算机</div>
+    </div>
+    <div class="icon" onclick="openWindow('垃圾筒')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/bin.png">
+      <div class="label">垃圾筒</div>
+    </div>
+    <div class="icon" onclick="openWindow('环境')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/setting.png">
+      <div class="label">环境</div>
+    </div>
+    <div class="icon" onclick="openWindow('终端')">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/main/images/cmd.png">
+      <div class="label">终端</div>
+    </div>
+    <div class="icon" onclick="virusAttack()">
+      <img src="https://raw.githubusercontent.com/ryan1114-carer/cousin-bear-os/refs/heads/main/images/virus.png">
+      <div class="label">病毒</div>
+    </div>
+  </div>
+  <div class="taskbar">
+    <button class="start-button" onclick="toggleProgramList()">👁️查看</button>
+    <span>cousin bear os模拟桌面1.1</span>
+    <span class="clock" id="clock"></span>
+  </div>
+  <div class="context-menu" id="contextMenu"></div>
+  <div class="program-list" id="programList">
+    <div onclick="openWindow('此计算机')">🖥️ 此计算机</div>
+    <div onclick="openWindow('垃圾筒')">🗑️ 垃圾筒</div>
+    <div onclick="openWindow('环境')">⚙️ 环境</div>
+    <div onclick="openWindow('终端')">⬛ 终端</div>
+    <div onclick="openWindow('浏览器')">🌍 浏览器</div>
+    <div onclick="openWindow('粉红熊扫描')">🧸 粉红熊扫描</div>
+    <div onclick="shutdown()">📴 关机</div>
+  </div>
+  <script>
+    const contextMenu = document.getElementById("contextMenu");
+    const desktop = document.getElementById("desktop");
+    const programList = document.getElementById("programList");
+    const clock = document.getElementById("clock");
+    const windowMessages = {
+      "此计算机": "system.exe、virus.exe、monkey.jpg",
+      "垃圾筒": "omg.mp4",
+      "环境": "此版本的环境没有东西，抱歉",
+      "终端": "输入「help」获得所有指令_",
+      "浏览器": "www.google.com",
+      "粉红熊扫描": "你的计算机有一个病毒：virus.exe"
+    };
+
+    let virusInterval = null;
+    let virusWindowCount = 0;
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString();
+      clock.textContent = timeStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function openWindow(title) {
+      const newWin = document.createElement("div");
+      newWin.className = "window";
+      newWin.innerHTML = `
+        <div class="window-header" onmousedown="startDrag(event, this.parentElement)">
+          <span>${title}</span>
+          <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="window-content">
+          <p>${windowMessages[title] || "哎呀！电脑发生了错误，请立即修复"}</p>
+          ${(title === "错误") ? '<button onclick="this.parentElement.parentElement.remove()">取消</button> <button onclick="this.parentElement.parentElement.remove()">关闭</button>' : ''}
+        </div>
+      `;
+      newWin.style.top = Math.random() * 200 + 100 + "px";
+      newWin.style.left = Math.random() * 300 + 100 + "px";
+      document.body.appendChild(newWin);
+    }
+
+    function toggleProgramList() {
+      programList.style.display = programList.style.display === "none" || programList.style.display === '' ? "flex" : "none";
+    }
+
+    function startDrag(e, win) {
+      e.preventDefault();
+      let offsetX = e.clientX - win.offsetLeft;
+      let offsetY = e.clientY - win.offsetTop;
+      function move(ev) {
+        win.style.left = `${ev.clientX - offsetX}px`;
+        win.style.top = `${ev.clientY - offsetY}px`;
+      }
+      function stop() {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", stop);
+      }
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", stop);
+    }
+
+    function shutdown() {
+      document.body.innerHTML = '<div style="background:black;width:100vw;height:100vh"></div>';
+    }
+
+    function handleKey(e) {
+      if (e.key === 'F11') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function virusAttack() {
+      if (virusInterval) return;
+      virusInterval = setInterval(() => {
+        openWindow('错误');
+        virusWindowCount++;
+        if (virusWindowCount >= 100) {
+          window.open('https://ryan1114-carer.github.io/cousin-bear-os/code/error.html', '_blank');
+          clearInterval(virusInterval);
+          virusInterval = null;
+        }
+      }, 90);
+    }
+
+    const initWin = document.createElement("div");
+    initWin.className = "window";
+    initWin.innerHTML = `
+      <div class="window-header" onmousedown="startDrag(event, this.parentElement)">
+        <span>欢迎使用</span>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+      </div>
+      <div class="window-content">
+        <p>cousin bear os 是由表哥熊原创，使用 HTML、CSS、JavaScript 等网路技术打造。欢迎到我的 GitHub 查看原始码！按下F11全萤幕</p>
+      </div>
+    `;
+    initWin.style.top = "100px";
+    initWin.style.left = "100px";
+    document.body.appendChild(initWin);
+  </script>
+</body>
+  </html>
